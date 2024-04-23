@@ -1,0 +1,68 @@
+import numpy as np
+from sklearn.model_selection import KFold, StratifiedKFold, LeaveOneOut
+
+#Sample data
+x = np.array([[1,2],[3,4],[5,6],[7,8]])
+y = np.array([1,2,1,2])
+
+#function to print cross validation scores
+def print_scores(scores):
+  print("Cross-validation scores: ", scores)
+  print("Mean Accuracy: ", np.mean(scores))
+
+#Perform k-fold cross-validation
+def k_fold_cross_valdation(x,y,k):
+  kf = KFold(n_splits = k)
+  scores = []
+  for train_index, test_index in kf.split(x):
+    x_train, x_test = x[train_index], x[test_index]
+    y_train, y_test = y[train_index], y[test_index]
+    #train your model and evaluate
+    #Replace the next two lines with your model training and evaluation
+    #For demonstration, just printing the train and test indices
+    print("Train indices: ", train_index)
+    print("Test Indices: ", test_index)
+    scores.append(0.8) #dummy accuracy
+    print_scores(scores)
+# Perform stratified k-fold cross-validation
+def stratified_k_fold_cross_validation(x,y,k):
+  skf = StratifiedKFold(n_splits=k)
+  scores = []
+  for train_index, test_index in skf.split(x, y):
+    x_train, x_test = x[train_index], x[test_index]
+    y_train, y_test = y[train_index], y[test_index]
+
+    #train your model and evaluate
+    #Replace the next two lines with your model training and evaluation
+    #For demonstration, just printing the train and test indices
+
+    print("Train indices: ", train_index)
+    print("Test Indices: ", test_index)
+    scores.append(0.8) #dummy accuracy
+    print_scores(scores)
+
+# Perform leave-one-out cross-validation
+def leave_one_out_cross_validation(x,y,k):
+  loo = LeaveOneOut()
+  scores = []
+  for train_index, test_index in loo.split(x):
+    x_train, x_test = x[train_index], x[test_index]
+    y_train, y_test = y[train_index], y[test_index]
+
+    #train your model and evaluate
+    #Replace the next two lines with your model training and evaluation
+    #For demonstration, just printing the train and test indices
+   
+    print("Train indices: ", train_index)
+    print("Test Indices: ", test_index)
+    scores.append(0.8) #dummy accuracy
+    print_scores(scores)
+#Example usage
+print("K_fold cross_validation: ")
+k_fold_cross_valdation(x,y,k=2)
+
+print("\n Stratified K-Fold Cross-Validation: ")
+stratified_k_fold_cross_validation(x,y,k=2)
+
+print("\n Leave-One-Out Cross-Validation: ")
+leave_one_out_cross_validation(x,y, k=2) 

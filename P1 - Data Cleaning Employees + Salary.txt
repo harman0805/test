@@ -1,0 +1,42 @@
+import pandas as pd
+#Sample data with inconsistencies and errors
+data={
+    'Employee_ID':[101,102,103,104,105],
+    'First_Name':['John','Alice','Bob','Emily','Mike'],
+    'Last_Name':['Doe','Smith','Johnson','Williams',''],
+    'Age':[25,30,35,'thirty-six',40],
+    'Department':['HR','IT','Marketing','Finance','Admin'],
+    'Salary':[50000,60000,'unknown',75000,80000]
+    }
+#convert the dictionary into a pandas Dataframe
+df=pd.DataFrame(data)
+#Display the original data
+print("Original Data:")
+print(df)
+print()
+
+#Data cleaning steps
+#1 handling Missing values
+#Convert non-numeric 'Age' values to NaN
+df['Age']=pd.to_numeric(df['Age'],errors='coerce')
+# Replace missing values in 'Age' column with the median age
+median_age=df['Age'].median()
+df['Age'].fillna(median_age,inplace=True)
+#Replace 'unknown' salary with NaN
+df['Salary']=pd.to_numeric(df['Salary'],errors='coerce')
+#Replace missing values in 'Salary' column with the median salary
+median_salary=df['Salary'].median()
+df['Salary'].fillna(median_salary,inplace=True)
+
+#2. Handling Inconsistent values
+#convert all text in 'Last_Name' to uppercase
+df['Last_Name']=df['Last_Name'].str.upper()
+
+#3 validating data
+# check if department values are from a predefined set of categories
+valid_departments=['HR','IT','Marketing','Finance','Admin']
+df['Department']=df['Department'].apply(lambda x:x if x in valid_departments else 'Other')
+
+#Display the cleaned data
+print("Cleaned Data:")
+print(df)

@@ -1,0 +1,49 @@
+import pandas as pd
+#sample bank customer data with inconsistencies and errors
+data={
+    "Customer_Id":[101,102,103,104,105],
+    "First_Name":["John","Alice","Bob","Emily","Mike"],
+    "Last_Name":["Doe","Smith","Johnson","Williams",""],
+    "Age":[25,30,None,"thirty-six",40],
+    "Gender":["M","F","Male","Female","M"],
+    "Account_Type":["Savings","Checking","Unknown",
+                    "Savings","Investment"],
+    "Balance":["$5000","$6000","Unknown","$7500","10000"]
+    }
+# convert the dictionary into pandas Dataframe
+df=pd.DataFrame(data)
+
+#Display the original data
+print("Original Bank Customer Data:")
+print(df)
+print()
+
+#Data Cleaning Steps
+#1. Handling Missing Values
+#Convert non-numeric Age to NaN
+df["Age"]=pd.to_numeric(df["Age"],errors="coerce")
+
+#Repalce missing values in Age column with meadian age
+median_age=df["Age"].median()
+df["Age"].fillna(median_age,inplace=True)
+
+#2.Handling Inconsistent VALUES
+#Standardize gender values to "Male","Female" or "other"
+df["Gender"]=df["Gender"].str.lower().map({"m":"Male",
+                                           "f":"Female"}).fillna("Other")
+
+#Standardize account type values
+valid_account_types=["Savings","Checking","Investment"]
+df["Account_Type"]=df["Account_Type"].apply(lambda x:x if x in valid_account_types
+                                            else "Unknown")
+#3.Handling Inavlid Balance Values
+#Remove "$" sign and convert balance to numeric
+df["Balance"]=pd.to_numeric(df["Balance"].replace
+                            ('[\$,]',"" ,regex=True),
+                            errors="coerce")
+#Replace missing balance values with 0
+df["Balance"].fillna(0,inplace=True)
+
+#Display the cleaned data
+print("Cleaned Bank Customer Data:")
+print(df)

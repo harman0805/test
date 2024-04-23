@@ -1,0 +1,36 @@
+import pandas as pd
+#sample data with missing values and inconsistencies
+data={
+    'Name':['John','Alice','Bob','Emily','Mike'],
+    'Age':[25,30,None,35,40],
+    'Gender':['Male','female','Unknown','Female','Male'],
+    'City':['New York','Los Angeles','Chicago',' ','San Francisco']
+    }
+# convert the dictionary into a pandas dataframe
+df=pd.DataFrame(data)
+
+#Display the original data
+print("Original Data")
+print(df)
+print()
+
+# Data cleaning steps
+#1 Handling missing values in 'Age' column with median age
+median_age=df['Age'].median()
+df['Age'].fillna(median_age,inplace=True)
+
+#2 Handling inconsistent values
+# replace 'unknown' gender with 'other'
+df['Gender'].replace('Unknown','Other',inplace=True)
+
+#3 Handling white spaces
+# remove leading and trailing white spaces from 'City' column
+df['City']=df['City'].str.strip()
+
+#4 Handling empty stringd
+# replace empty strings in 'citi' column with 'unknown'
+df['City'].replace('','Unknown',inplace=True)
+
+#Display the cleaned data
+print("Cleaned Data:")
+print(df)

@@ -1,0 +1,66 @@
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import AdaBoostClassifier,BaggingClassifier,RandomForestClassifier
+from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score
+
+#load the iris dataset
+iris=load_iris()
+X,y=iris.data,iris.target
+
+#Split data into train and test sets
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=42)
+
+#define classifiers
+boosting_classifier=AdaBoostClassifier(n_estimators=50,random_state=42)
+
+bagging_classifier=BaggingClassifier(n_estimators=50,random_state=42)
+
+random_forest_classifier=RandomForestClassifier(n_estimators=50,random_state=42)
+
+#train classifier
+boosting_classifier.fit(X_train,y_train)
+bagging_classifier.fit(X_train,y_train)
+random_forest_classifier.fit(X_train,y_train)
+
+#prediction
+boosting_pred=boosting_classifier.predict(X_test)
+bagging_pred=bagging_classifier.predict(X_test)
+random_forest_pred=random_forest_classifier.predict(X_test)
+
+# evaluate pewrformance
+boosting_accuracy=accuracy_score(y_test,boosting_pred)
+precision=precision_score(y_test,boosting_pred,average='macro')
+recall=recall_score(y_test,boosting_pred,average='macro')
+f1=f1_score(y_test,boosting_pred,average='macro')
+
+print("Boosting Performance:")
+print("Accuracy:",boosting_accuracy)
+print("Precision:",precision)
+print("Recall:",recall)
+print("f1 score:",f1)
+print()
+
+bagging_accuracy=accuracy_score(y_test,bagging_pred)
+precision=precision_score(y_test,bagging_pred,average='macro')
+recall=recall_score(y_test,bagging_pred,average='macro')
+f1=f1_score(y_test,bagging_pred,average='macro')
+
+print("Bagging Performance:")
+print("Accuracy:",bagging_accuracy)
+print("Precision:",precision)
+print("Recall:",recall)
+print("f1 score:",f1)
+print()
+
+random_forest_accuracy=accuracy_score(y_test,random_forest_pred)
+precision=precision_score(y_test,random_forest_pred,average='macro')
+recall=recall_score(y_test,random_forest_pred,average='macro')
+f1=f1_score(y_test,random_forest_pred,average='macro')
+
+print("Random Forest Performance:")
+print("Accuracy:",random_forest_accuracy)
+print("Precision:",precision)
+print("Recall:",recall)
+print("f1 score:",f1)
+print()
