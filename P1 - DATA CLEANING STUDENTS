@@ -1,0 +1,47 @@
+import pandas as pd
+#sample data with inconsistencies and errors
+data={
+    'Student_id':[1,2,3,4,5],
+    'First_Name':['John','Alice','Bob','Emily','Mike'],
+    'Last_Name':['Doe','Smith','Johnson','Williams',''],
+    'Math_Score':[85,90,'A',75,80],
+    'Science_Score':[92,88,85,90,95],
+    'English_Score':[78,80,82,85,'B'],
+    'History_Score':[88,85,90,'C',92],
+    'Grade':['A','B','C','D','E']
+}
+#convert the dictionary into a pandas dataframe
+df=pd.DataFrame(data)
+#Display the original data
+print("Original Data")
+print(df)
+print()
+
+#Data cleaning Steps
+
+#1 Handling Missing Values
+#convert non-numeric scores to NaN
+for col in['Math_Score','Science_Score','English_Score','History_Score']:
+    df[col]=pd.to_numeric(df[col],errors='coerce')
+
+#Fill missing values with the ,mean of each subject
+for col in['Math_Score','Science_Score','English_Score','History_Score']:
+    mean_score=df[col].mean()
+    df[col].fillna(mean_score,inplace=True)
+
+#2 Handling Inconsistent values
+#convert text-based grades to NaN
+df['Grade']=df['Grade'].apply(lambda x:x if x in ['A','B','C','D','E'] else None)
+
+#3 Validating Data
+# check if scores are within a valid range (0 to 100)
+for col in['Math_Score','Science_Score','English_Score','History_Score']:
+    df[col]=df[col].apply(lambda x:x if 0<=x<=100 else None)
+
+#4 Standardizing data
+#convert all text in 'Last_Name ' in uppercase
+df['Last_Name']=df['Last_Name'].str.upper()
+
+#display the cleaned data
+print("Cleaned data")
+print(df)
